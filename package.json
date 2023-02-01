@@ -71,6 +71,8 @@
     "@angular/platform-browser-dynamic": "12.1.2",
     "@angular/router": "12.1.2",
     "@ng-bootstrap/ng-bootstrap": "10.0.0",
+    "ag-grid-angular": "^29.0.0",
+    "ag-grid-community": "^29.0.0",
     "chart.js": "2.9.4",
     "core-js": "3.15.2",
     "cors": "^2.8.5",

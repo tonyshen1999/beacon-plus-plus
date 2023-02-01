@@ -9,6 +9,7 @@ import { TablesComponent } from "../../pages/tables/tables.component";
 import { TypographyComponent } from "../../pages/typography/typography.component";
 import { ImportComponent } from 'src/app/pages/import/import.component';
 import { MissingColumnsComponent } from 'src/app/pages/import/missing-columns/missing-columns.component';
+import {TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
 // import { RtlComponent } from "../../pages/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
@@ -21,6 +22,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "typography", component: TypographyComponent },
   { path: "import", component: ImportComponent },
   { path: "import", component: MissingColumnsComponent },
+  { path: "ag", component: TestAgGridComponent },
 
   // { path: "rtl", component: RtlComponent }
 ];
