@@ -18,7 +18,7 @@ import { ImportComponent } from './pages/import/import.component';
 import { ReadexcelDirective } from './directives/readexcel.directive';
 import { MissingColumnsComponent } from './pages/import/missing-columns/missing-columns.component';
 import { TestAgGridComponent } from './test-ag-grid/test-ag-grid.component';
-
+import { AgGridModule } from 'ag-grid-angular';
 
 @NgModule({
   imports: [
@@ -29,6 +29,7 @@ import { TestAgGridComponent } from './test-ag-grid/test-ag-grid.component';
     NgbModule,
     RouterModule,
     AppRoutingModule,
+    AgGridModule,
     ToastrModule.forRoot()
   ],
   declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, ScenarioListComponent, ImportComponent, ReadexcelDirective, MissingColumnsComponent, TestAgGridComponent],
