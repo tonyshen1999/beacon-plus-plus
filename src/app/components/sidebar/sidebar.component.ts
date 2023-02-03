@@ -49,6 +49,13 @@ export const ROUTES: RouteInfo[] = [
     icon: "icon-chart-bar-32",
     class: ""
   },
+  {
+    path: "/ag",
+    title: "test ag lol",
+    rtlTitle: "ملف تعريفي للمستخدم",
+    icon: "icon-chart-bar-32",
+    class: ""
+  },
 
 ];
 
