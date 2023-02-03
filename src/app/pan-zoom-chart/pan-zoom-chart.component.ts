@@ -1,25 +1,11 @@
-import { Component, OnInit } from "@angular/core";
-
-declare const google: any;
-
-interface Marker {
-lat: number;
-lng: number;
-label?: string;
-draggable?: boolean;
-}
+import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: "app-map",
-  templateUrl: "map.component.html"
+  selector: 'app-pan-zoom-chart',
+  templateUrl: './pan-zoom-chart.component.html',
+  styleUrls: ['./pan-zoom-chart.component.scss']
 })
-export class MapComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {
-
-      
-  }
+export class PanZoomChartComponent implements OnInit {
   ds = {
     id: '1',
     name: 'Lao Lao',
@@ -59,4 +45,9 @@ export class MapComponent implements OnInit {
       { id: '21', name: 'Yu Tie', title: 'department manager' }
     ]
   };
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
 }

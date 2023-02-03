@@ -10,6 +10,7 @@ import { TypographyComponent } from "../../pages/typography/typography.component
 import { ImportComponent } from 'src/app/pages/import/import.component';
 import { MissingColumnsComponent } from 'src/app/pages/import/missing-columns/missing-columns.component';
 import {TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
+import {PanZoomChartComponent} from 'src/app/pan-zoom-chart/pan-zoom-chart.component'
 // import { RtlComponent } from "../../pages/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
@@ -23,5 +24,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "import", component: ImportComponent },
   { path: "import", component: MissingColumnsComponent },
   { path: "ag", component: TestAgGridComponent },
+  { path: "org-chart", component: PanZoomChartComponent },
+
   // { path: "rtl", component: RtlComponent }
 ];

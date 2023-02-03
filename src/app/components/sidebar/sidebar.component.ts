@@ -23,7 +23,7 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
-    path: "/maps",
+    path: "/org-chart",
     title: "Org Chart View",
     rtlTitle: "خرائط",
     icon: "icon-support-17",
@@ -56,6 +56,7 @@ export const ROUTES: RouteInfo[] = [
     icon: "icon-chart-bar-32",
     class: ""
   },
+  
 
 ];
 
