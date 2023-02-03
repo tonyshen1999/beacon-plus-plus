@@ -7,37 +7,22 @@
 
 <body>
     <div class = "content">
-        <div class=" row">
-            <div class=" col-md-12">
-              <div class=" card">
-                <div class=" card-header">
-                  <h4 class=" card-title">Table</h4>
-                </div>
-                <div class=" card-body">
-                  <div class=" table-responsive">
-                    <div class="container">
-                        <!-- <div id="left"></div> -->
-                    
-                        <div id="center">
-                            <ag-grid-angular
-                        #agGrid
-                        style="width: 100%; height: 100%;"
-                        id="myGrid"
-                        [rowData]="rowData"
-                        class="ag-theme-balham"
-                        [columnDefs]="columnDefs"
-                        [rowData]="rowData"
-                        ></ag-grid-angular>
-                    
-                        </div>
-                        <!-- <div id="right"></div> -->
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-           
-          </div>
+        <!--The content below is only a placeholder and can be replaced.-->
+<div>
+    <h1>
+      Aye
+    </h1>
+    <ag-grid-angular
+      style="height: 80vh;"
+      class="ag-theme-alpine"
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="rowData"
+      (cellValueChanged)="onCellValueChanged($event)"
+    >
+    </ag-grid-angular>
+  </div>
+  
     </div>
     
 
