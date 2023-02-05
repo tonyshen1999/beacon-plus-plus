@@ -2,29 +2,44 @@ import { Component, OnInit } from "@angular/core";
 import {HttpClient} from '@angular/common/http'
 import { TablesService } from './tables.service';
 import { PeriodService } from 'src/app/services/period.service';
+import { TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
+import {
+  CellValueChangedEvent,
+  ColDef,
+  ValueGetterParams,
+  ValueSetterParams,
+  GridApi,
+  GridReadyEvent, ITextFilterParams,
+} from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 @Component({
   selector: "app-tables",
   templateUrl: "tables.component.html"
 })
 export class TablesComponent implements OnInit {
 
-  constructor(private http:HttpClient, private tablesService:TablesService, private periodService:PeriodService) {}
+  
+  private gridApi!: GridApi;
   currentTable:any;
   currentTableName:string;
   period:string;
   tableRows:string[] = []
   obj:any;
+  public rowData: any[]|null = null;
+
   tableList:string[]=Array.from(this.tablesService.pathMap.keys());
   currentTableHeaders:string[] = [];
-  ngOnInit() {
-    // this.obj = this.http.get("http://127.0.0.1:8000/scn/").subscribe(
-    //   data => this.obj = data
-    // );
+  
 
-    // console.log(this.obj)
-    // this.getPeriod()
-    // console.log(this.getPeriod())
-   
+  constructor(private http:HttpClient, private tablesService:TablesService, private periodService:PeriodService) {}
+
+  ngOnInit() {
+
+    this.pullTable("Thing Tables");
+    this.currentTableName = "Thing Tables"
     this.periodService.pullPeriod().subscribe(
       data =>{
         let period_list = [];
@@ -50,62 +65,85 @@ export class TablesComponent implements OnInit {
           this.period= period_string
       });
   }
-
-  // getPeriod=()=>{
-
-  //   return this.periodService.pullPeriod().subscribe(
-  //     data =>{
-  //       let period_list = [];
-  //       // console.log(data)
-  //       let periods = Array.from(Object.keys(data));
-
-  //       // UPDATE THIS TO DISPLAY DATE RANGE AND MOVE TO SERVICE
-  //       for (let p of periods){
-          
-  //         for(let name in data[p]){
-  //           // console.log(data[p][name])
-  //           period_list.push(data[p][name])
-  //         }
-  //         break;
-  //       }
-  //       // console.log("hi hi ")
-  //       let period_string = period_list[0]["period"];
-  //       if (period_list.length>1){
-  //         period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
-  //       }
-
-  //       // console.log(period_string)
-  //       this.period= period_string
-
-
-  //     });
-      
-  // }
-  pullTable = (table:string) =>{
-    this.currentTable = [];
-
+  pullTable(table){
     this.tablesService.getTable(table).subscribe(
-      data =>{
-        this.currentTable = data;
-        // console.log(data)
-        this.currentTableName = table;
-        this.currentTable = this.currentTable[this.tablesService.tableKeyMap.get(table)];
-        for(let t of this.currentTable){
-          this.currentTableHeaders = Array.from(Object.keys(t))
-          // for(var j in val){
-          //     var sub_key = j;
-          //     var sub_val = val[j];
-          //     console.log(sub_key);
-          // }
-          break;
-        }
-    
-        // console.log(this.currentTable)
-        // console.log(this.currentTableHeaders)
-      },
-      error =>{
-        console.log(error)
+      data => {
+        // console.log(table);
+        let tableKey = this.tablesService.tableKeyMap.get(table);
+        // console.log(tableKey);
+       
+        const colDefs = this.gridApi.getColumnDefs();
+        colDefs.length = 0;
+        
+        data = data[tableKey];
+        this.rowData = data;
+        console.log(data)
+        const keys = Object.keys(data[0]);
+        keys.forEach(key => colDefs.push({field:key}));
+
+        this.gridApi.setColumnDefs(colDefs)
+        this.gridApi.setRowData(data)
+        this.currentTableName = table
       }
-    )
+    );
   }
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
+  public defaultColDef: ColDef = {
+    flex: 1,
+    resizable: true,
+    editable: true,
+    filter: true,
+    sortable:true,
+
+  };
+
+
+  onBtnExport() {
+    this.gridApi.exportDataAsCsv();
+  }
+
+  onCellValueChanged(event: CellValueChangedEvent) {
+    console.log('Data after change is', event.data);
+  }
+
+  public columnDefs: ColDef[] = getColumnDefs();
+
+
+
 }
+function getColumnDefs() {
+  return [
+    { field: 'athlete' },
+    { field: 'age' },
+    { field: 'country' },
+    { field: 'sport' },
+    { field: 'year' },
+    { field: 'date' },
+    { field: 'gold' },
+    { field: 'silver' },
+    { field: 'bronze' },
+    { field: 'total' },
+  ];
+}
+var nameFilterParams: ITextFilterParams = {
+  filterOptions: ['contains', 'notContains'],
+  textFormatter: (r) => {
+    if (r == null) return null;
+    return r
+      .toLowerCase()
+      .replace(/[àáâãäå]/g, 'a')
+      .replace(/æ/g, 'ae')
+      .replace(/ç/g, 'c')
+      .replace(/[èéêë]/g, 'e')
+      .replace(/[ìíîï]/g, 'i')
+      .replace(/ñ/g, 'n')
+      .replace(/[òóôõö]/g, 'o')
+      .replace(/œ/g, 'oe')
+      .replace(/[ùúûü]/g, 'u')
+      .replace(/[ýÿ]/g, 'y');
+  },
+  debounceMs: 200,
+  suppressAndOrCondition: true,
+};

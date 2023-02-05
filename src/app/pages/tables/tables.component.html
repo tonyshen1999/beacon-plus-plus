@@ -2,29 +2,51 @@
 
 
 <div class=" content">
+  <div class=" row">
+    <div class=" col-12">
+      <div class=" card card-nav-tabs">
 
-  <span class=" nav-item" ngbDropdown>
-    <button class="btn btn-secondary dropdown-toggle" type="button" aria-haspopup="true"data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
-      Select Table
-    </button>
-    <ul class=" dropdown-navbar" ngbDropdownMenu>
-      <li class=" nav-link" *ngFor="let table of tableList">
-        <a class=" nav-item" href="javascript:void(0)" (value)="table" (click)="pullTable(table)"ngbDropdownItem >
-          {{table}}
-        </a>
-     
-    </ul>
-  </span>
+        <div class=" card-header">
+          <div class=" row">
+            <div class=" col-sm-4 text-left">
+              
+
+
+              <h2 class=" card-title">For Period(s) {{period}} </h2>
+              
+            </div>
+            <div class = "col-sm-4 left">
+              <span class=" nav-item" ngbDropdown>
+                <button class="btn btn-secondary dropdown-toggle" type="button" aria-haspopup="true"data-toggle="dropdown" href="javascript:void(0)" ngbDropdownToggle>
+                  Select Table
+                </button>
+                <ul class=" dropdown-navbar" ngbDropdownMenu>
+                  <li class=" nav-link" *ngFor="let table of tableList">
+                    <a class=" nav-item" href="javascript:void(0)" (value)="table" (click)="pullTable(table)"ngbDropdownItem >
+                      {{table}}
+                    </a>
+                 
+                </ul>
+              </span>
+            
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 
   <div class=" row">
     <div class=" col-md-12">
       <div class=" card">
         <div class=" card-header">
-          <h4 class=" card-title">{{currentTableName}}, {{period}}</h4>
+          <h2 class=" card-title">{{currentTableName}}</h2>
         </div>
         <div class=" card-body">
-          <div class=" table-responsive">
+          <!-- <div class=" table-responsive">
             <table class=" table tablesorter" id="">
               <thead class=" text-primary">
                 <tr >
@@ -40,7 +62,20 @@
                 
               </tbody>
             </table>
-          </div>
+          </div> -->
+          <ag-grid-angular
+          style="height: 80vh;"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [rowData]="rowData"
+          (cellValueChanged)="onCellValueChanged($event)"
+          (gridReady)="onGridReady($event)"
+          [paginationAutoPageSize]="true"
+          [pagination]="true"
+    
+        >
+        </ag-grid-angular>
         </div>
       </div>
     </div>

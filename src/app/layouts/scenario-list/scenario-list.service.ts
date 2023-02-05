@@ -16,7 +16,7 @@ export class ScenarioListService {
    }
 
   getAllScenarios(): Observable<any>{
-    return this.http.get(this.baseurl+"scn/",{headers:this.httpHeaders});
+    return this.http.get(this.baseurl+"scn-list/",{headers:this.httpHeaders});
   }
   createScenario(f): Observable<any>{
     // console.log(scn);

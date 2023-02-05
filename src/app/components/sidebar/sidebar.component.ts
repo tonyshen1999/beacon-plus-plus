@@ -19,14 +19,14 @@ export const ROUTES: RouteInfo[] = [
     path: "/tables",
     title: "Tables View",
     rtlTitle: "الرموز",
-    icon: "icon-atom",
+    icon: "icon-single-copy-04",
     class: ""
   },
   {
     path: "/org-chart",
     title: "Org Chart View",
     rtlTitle: "خرائط",
-    icon: "icon-support-17",
+    icon: "icon-vector",
     class: "" },
   {
     path: "/import",
