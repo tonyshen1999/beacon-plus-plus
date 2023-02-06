@@ -1,6 +1,6 @@
 <div class="content">
     
-    <div class="container">
+    <div class="container" *ngIf="showImport">
 
         <div class=" row">
             <div class=" col-sm-6 text-left">
@@ -9,7 +9,7 @@
 
             </div>
             <div class=" col-sm-6 text-right">
-                <button class="btn btn-group" (click)="submitClicked()" [disabled]="disableButton" [routerLink]="['/dashboard/:id']">
+                <button class="btn btn-group" (click)="submitClicked()" [disabled]="disableButton">
                     Submit
                 </button>
 
@@ -52,6 +52,45 @@
             
           </table>
     </div>
+    <div class = "container" *ngIf = "showLog">
+      <div class=" row">
+        <div class=" col-sm-6 text-left">
+            <h2 >Import Log</h2>
+           
 
+        </div>
+        
+
+    </div>
+      <ul style = "list-style-type: none; padding: 0; margin: 0; ">
+        <li>
+          <a href="javascript:;" routerLinkActive="active" (click)="showSuccess= !showSuccess" >Successful Import Rows: {{logData["Success"].length}}</a>
+          <ul style = "list-style-type: none; padding: 0; margin: 0; "
+              *ngIf = "showSuccess">
+              <li *ngFor="let l of logData['Success']" style ="color:green">
+                
+                {{l["log_text"]}}
+              </li>
+          </ul>
+        </li>
+        <li >
+          <a href="javascript:;" routerLinkActive="active" (click)="showMessage=!showMessage" >Imports Messages: {{logData["Message"].length}}</a >
+          <ul style = "list-style-type: none; padding: 0; margin: 0; "
+            *ngIf = "showMessage">
+            <li *ngFor="let l of logData['Message']">{{l["log_text"]}}</li>
+          </ul>
+        </li>
+        <li >
+          <a href="javascript:;" routerLinkActive="active" (click)="showErrors= !showErrors" >Import Errors: {{logData["Errors"].length}}</a>
+          <ul style = "list-style-type: none; padding: 0; margin: 0; "
+            *ngIf = "showErrors">
+            <li *ngFor="let l of logData['Errors']" style ="color:red">
+              {{l["log_text"]}}
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+    </div>
 
 </div>

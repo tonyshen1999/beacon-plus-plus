@@ -4,6 +4,7 @@ import { PeriodService } from 'src/app/services/period.service';
 import { NgForm } from '@angular/forms';
 import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { DashboardService } from './dashboard.service';
+import { CalcService } from '../calc/calc.service';
 @Component({
   selector: "app-dashboard",
   templateUrl: "dashboard.component.html"
@@ -23,7 +24,7 @@ export class DashboardComponent implements OnInit {
   period:string = "N/A";
   versions:any[]=[];
   closeResult:string;
-  constructor(private periodService:PeriodService,private modalService:NgbModal, private dashboardService:DashboardService) {}
+  constructor(private periodService:PeriodService,private modalService:NgbModal, private dashboardService:DashboardService, private calcService:CalcService) {}
 
   onSubmit(f:NgForm){
     this.createPeriod(f.value)
@@ -69,7 +70,18 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
+  resetCalc(){
+    this.calcService.clearCalc(this.period).subscribe(data=>{
+      console.log(data)
+    })
 
+  }
+
+  resetData(){
+    this.calcService.clearData(this.period).subscribe(data=>{
+      console.log(data)
+    })
+  }
 	open(content) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
 			(result) => {

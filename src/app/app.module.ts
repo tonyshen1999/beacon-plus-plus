@@ -21,6 +21,7 @@ import { MissingColumnsComponent } from './pages/import/missing-columns/missing-
 import { TestAgGridComponent } from './test-ag-grid/test-ag-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { PanZoomChartComponent } from './pan-zoom-chart/pan-zoom-chart.component';
+import { CalcComponent } from './pages/calc/calc.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,7 @@ import { PanZoomChartComponent } from './pan-zoom-chart/pan-zoom-chart.component
     OrgchartModule,
     ToastrModule.forRoot()
   ],
-  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, ScenarioListComponent, ImportComponent, ReadexcelDirective, MissingColumnsComponent, TestAgGridComponent, PanZoomChartComponent],
+  declarations: [AppComponent, AdminLayoutComponent, AuthLayoutComponent, ScenarioListComponent, ImportComponent, ReadexcelDirective, MissingColumnsComponent, TestAgGridComponent, PanZoomChartComponent, CalcComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -12,6 +12,7 @@ export class ImportService {
   
   )
   response:any;
+  logData:any;
   constructor(private http:HttpClient) { 
 
   }
@@ -32,7 +33,7 @@ export class ImportService {
     // console.log(JSON.stringify(jsonObject))
     let jsonObject = {};
     sheetHash.forEach((value: string[], key: string) => {
-      console.log(key, value);
+      // console.log(key, value);
       jsonObject[key] = value;
     });
     let returnObject = {
@@ -41,13 +42,20 @@ export class ImportService {
       "data": jsonObject,
     }
     let returnObjectString = JSON.stringify(returnObject);
+    // let post=this.http.post(this.baseurl+"import/",returnObject).subscribe(data => {
+    //   this.logData = data
+    //   return data;
+    // });
 
-    let post=this.http.post(this.baseurl+"import/",returnObject).subscribe(data => {
-      console.log(data);
-  });
-    console.log(this.response)
-    return;
+    // console.log(this.logData)
+    // console.log(this.response)
+   return this.http.post(this.baseurl+"import/",returnObject)
 
+  }
+
+  getImportLog(): Observable<any>{
+    
+    return this.http.get(this.baseurl+"import-log/",{headers:this.httpHeaders});
   }
 
 }

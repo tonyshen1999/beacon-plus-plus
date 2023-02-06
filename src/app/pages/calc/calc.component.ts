@@ -1,0 +1,123 @@
+import { Component, OnInit } from "@angular/core";
+import {HttpClient} from '@angular/common/http'
+import { PeriodService } from 'src/app/services/period.service';
+import { TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
+import {
+  CellValueChangedEvent,
+  ColDef,
+  ValueGetterParams,
+  ValueSetterParams,
+  GridApi,
+  GridReadyEvent, ITextFilterParams,INumberFilterParams
+} from 'ag-grid-community';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { CalcService } from './calc.service';
+
+@Component({
+  selector: 'app-calc',
+  templateUrl: './calc.component.html',
+  styleUrls: ['./calc.component.scss']
+})
+export class CalcComponent implements OnInit {
+  private gridApi!: GridApi;
+  period:string;
+  constructor(private calcService:CalcService, private periodService:PeriodService) { }
+  public rowData: any[]|null = null;
+
+  public defaultColDef: ColDef = {
+    flex: 1,
+    resizable: true,
+    editable: true,
+    filter: true,
+    sortable:true,
+
+  };
+  public columnDefs: ColDef[] = [
+    {
+      field: 'entity_name',
+      headerCheckboxSelection: true,
+      checkboxSelection: true,
+      showDisabledCheckboxes: true,
+    },
+    {
+      field: 'pd_name',
+      
+    },
+  ];
+  ngOnInit(): void {
+    
+    this.periodService.pullPeriod().subscribe(
+      data =>{
+        let period_list = [];
+          // console.log(data)
+          let periods = Array.from(Object.keys(data));
+
+          // UPDATE THIS TO DISPLAY DATE RANGE AND MOVE TO SERVICE
+          for (let p of periods){
+            
+            for(let name in data[p]){
+              // console.log(data[p][name])
+              period_list.push(data[p][name])
+            }
+            break;
+          }
+          // console.log("hi hi ")
+          let period_string = period_list[0]["period"];
+          if (period_list.length>1){
+            period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
+          }
+
+          // console.log(period_string)
+          this.period= period_string
+      });
+      this.pullEntities()
+  }
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
+  onCellValueChanged(event: CellValueChangedEvent) {
+    console.log('Data after change is', event.data);
+  }
+  calculate(){
+    let obj = {
+      "scn_id":Number(sessionStorage.getItem("scnID")),
+      "scn_version":Number(sessionStorage.getItem("scnVersion")),
+      "entities": this.rowData
+    };
+    this.calcService.calculate(obj).subscribe(data=>{
+      console.log(data)
+    });
+  }
+  pullEntities(){
+    this.calcService.getRelationships().subscribe(data=>{
+      data = data["relationships"]
+      
+      let children = new Set<string>(); 
+      let parent = new Set<string>(); 
+      console.log(data)
+      for(let d of data){
+        children.add(d["child_name"])
+        parent.add(d["parent_name"])
+      }
+      let children_array = Array.from(children);
+      let parent_array = Array.from(parent)
+      console.log(children_array)
+      console.log(parent_array)
+      let all_entities = children_array.concat(parent_array)
+
+      let rowData = []
+
+      for(let e of all_entities){
+        rowData.push({
+          "entity_name":e,
+          "pd_name":this.period
+        })
+      }
+      
+      this.gridApi.setRowData(rowData)
+      this.rowData = rowData
+    });
+  }
+}

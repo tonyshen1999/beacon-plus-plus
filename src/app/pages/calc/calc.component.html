@@ -1,0 +1,45 @@
+<div class = "content">
+    <div class=" row">
+        <div class=" col-md-12">
+          <div class=" card">
+            <div class=" card-header">
+              <h2 class=" card-title">Calculation Tab</h2>
+              <button class= "btn btn-danger" (click)="calculate()">Calculate</button>
+            </div>
+            <div class=" card-body">
+              <!-- <div class=" table-responsive">
+                <table class=" table tablesorter" id="">
+                  <thead class=" text-primary">
+                    <tr >
+                      <th *ngFor="let h of currentTableHeaders">{{h}}</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let r of currentTable">
+                      <td *ngFor="let h of currentTableHeaders">{{r[h]}}</td>
+                      
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div> -->
+              <ag-grid-angular
+              style="height: 80vh;"
+              class="ag-theme-alpine"
+              [columnDefs]="columnDefs"
+              [defaultColDef]="defaultColDef"
+              [rowData]="rowData"
+              (cellValueChanged)="onCellValueChanged($event)"
+              (gridReady)="onGridReady($event)"
+              [pagination]="true"
+        
+            >
+            </ag-grid-angular>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+
+</div>

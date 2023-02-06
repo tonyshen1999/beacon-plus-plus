@@ -9,7 +9,7 @@ import {
   ValueGetterParams,
   ValueSetterParams,
   GridApi,
-  GridReadyEvent, ITextFilterParams,
+  GridReadyEvent, ITextFilterParams,INumberFilterParams
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
@@ -79,13 +79,23 @@ export class TablesComponent implements OnInit {
         this.rowData = data;
         console.log(data)
         const keys = Object.keys(data[0]);
-        keys.forEach(key => colDefs.push({field:key}));
+        keys.forEach(key => colDefs.push({field:key,filterParams:saleFilterParams}));
 
         this.gridApi.setColumnDefs(colDefs)
         this.gridApi.setRowData(data)
         this.currentTableName = table
       }
     );
+  }
+
+  private determineFilter(key){
+    if (key == "amount" || key == "adj_amount"){
+      console.log("sldfkjaslkdfjalksdfjaslkdfj")
+      return saleFilterParams;
+    }
+    else{
+      return {} as ITextFilterParams
+    }
   }
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
@@ -146,4 +156,12 @@ var nameFilterParams: ITextFilterParams = {
   },
   debounceMs: 200,
   suppressAndOrCondition: true,
+};
+let saleFilterParams: INumberFilterParams = {
+  allowedCharPattern: '\\d\\-\\,\\$',
+  numberParser: (text: string | null) => {
+    return text == null
+      ? null
+      : parseFloat(text.replace(',', '.').replace('$', ''));
+  },
 };

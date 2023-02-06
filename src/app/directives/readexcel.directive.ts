@@ -39,7 +39,7 @@ export class ReadexcelDirective {
         var ws = wb.Sheets[wb.SheetNames[i]];
         const data = XLSX.utils.sheet_to_json(ws)
         sheetMap.set(wb.SheetNames[i],data);
-        console.log(sheetMap)
+        // console.log(sheetMap)
         // subscriber.next(data);
       }
         

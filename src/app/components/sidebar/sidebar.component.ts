@@ -23,6 +23,13 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
+    path: "/calc",
+    title: "Calculate",
+    rtlTitle: "ملف تعريفي للمستخدم",
+    icon: "icon-triangle-right-17",
+    class: ""
+  },
+  {
     path: "/org-chart",
     title: "Org Chart View",
     rtlTitle: "خرائط",
@@ -49,13 +56,7 @@ export const ROUTES: RouteInfo[] = [
     icon: "icon-chart-bar-32",
     class: ""
   },
-  {
-    path: "/ag",
-    title: "test ag lol",
-    rtlTitle: "ملف تعريفي للمستخدم",
-    icon: "icon-chart-bar-32",
-    class: ""
-  },
+
   
 
 ];
