@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { read, readFile, writeFileXLSX } from "xlsx";
 import { HttpClient } from '@angular/common/http'
 import { ImportService } from './import.service';
+import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 
 @Component({
   selector: 'app-import',
@@ -22,6 +24,8 @@ export class ImportComponent implements OnInit {
   showMessage:boolean = false;
   showErrors:boolean = false;
   showImport:boolean = true;
+  importComplete:boolean = false;
+  closeResult:string;
 
   // NEED TO FIX ISSUE WITH NONE REQUIRED COLUMNS WITHIN EACH SHEET
 
@@ -37,7 +41,7 @@ export class ImportComponent implements OnInit {
 
 
 
-  constructor(private importService: ImportService) { }
+  constructor(private importService: ImportService, private modalService:NgbModal,) { }
 
   DataFromEventEmitter(event) {
 
@@ -57,6 +61,7 @@ export class ImportComponent implements OnInit {
     this.showMessage = false;
     this.showLog = false;
     this.showImport = true;
+    this.importComplete = false;
   }
 
 
@@ -111,6 +116,26 @@ export class ImportComponent implements OnInit {
       this.sheetInfo.set(sheetNames[i], sInfo);
     }
   }
+  open(loading) {
+		this.modalService.open(loading, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+  }
+  
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
 
 
   submitClicked() {
@@ -119,6 +144,7 @@ export class ImportComponent implements OnInit {
 
       this.logData = data
     });
+    this.importComplete = true
     this.showTable = false
     this.disableButton = true
     this.showLog = true

@@ -1,5 +1,43 @@
 <div class="content">
     
+  <ng-template #loading let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Importing data...</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+      
+        <div class="modal-body">
+
+
+
+
+          <p *ngIf="importComplete == true">
+            Successfully Imported {{logData["Success"].length}} rows
+          </p>
+
+
+
+        </div>
+        
+
+    </div>
+
+
+
+
+  </ng-template>
+
+
+
+
+
+
     <div class="container" *ngIf="showImport">
 
         <div class=" row">
@@ -9,7 +47,7 @@
 
             </div>
             <div class=" col-sm-6 text-right">
-                <button class="btn btn-group" (click)="submitClicked()" [disabled]="disableButton">
+                <button class="btn btn-group" (click)="[submitClicked(),open(loading)]" [disabled]="disableButton">
                     Submit
                 </button>
 

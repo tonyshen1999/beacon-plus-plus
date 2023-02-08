@@ -29,6 +29,7 @@ export class TablesComponent implements OnInit {
   tableRows:string[] = []
   obj:any;
   public rowData: any[]|null = null;
+  closeResult:string;
 
   tableList:string[]=Array.from(this.tablesService.pathMap.keys());
   currentTableHeaders:string[] = [];
@@ -65,6 +66,9 @@ export class TablesComponent implements OnInit {
           this.period= period_string
       });
   }
+
+
+
   pullTable(table){
     this.tablesService.getTable(table).subscribe(
       data => {
