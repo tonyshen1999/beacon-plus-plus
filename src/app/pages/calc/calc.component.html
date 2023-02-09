@@ -1,13 +1,46 @@
-<div class = "content">
+<div class="content">
+    
+    <ng-template #calc let-modal>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Calculation Log</h4>
+                <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+                        class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+            </div>
+
+
+            <div class="modal-body">
+
+
+                <p *ngIf="calcComplete == false">
+                    Calculating...
+                </p>
+
+                <p *ngIf="calcComplete == true">
+                    Successfully Calculated {{calcLog["Success"].length}} rows
+                </p>
+
+
+
+            </div>
+
+
+        </div>
+
+    </ng-template>
+
     <div class=" row">
         <div class=" col-md-12">
-          <div class=" card">
-            <div class=" card-header">
-              <h2 class=" card-title">Calculation Tab</h2>
-              <button class= "btn btn-danger" (click)="calculate()">Calculate</button>
-            </div>
-            <div class=" card-body">
-              <!-- <div class=" table-responsive">
+            <div class=" card">
+                <div class=" card-header">
+                    <h2 class=" card-title">Calculation Tab</h2>
+                    <button class="btn btn-danger" (click)="[calculate(),open(calc)]">Calculate</button>
+                </div>
+                <div class=" card-body">
+                    <!-- <div class=" table-responsive">
                 <table class=" table tablesorter" id="">
                   <thead class=" text-primary">
                     <tr >
@@ -24,22 +57,15 @@
                   </tbody>
                 </table>
               </div> -->
-              <ag-grid-angular
-              style="height: 80vh;"
-              class="ag-theme-alpine"
-              [columnDefs]="columnDefs"
-              [defaultColDef]="defaultColDef"
-              [rowData]="rowData"
-              (cellValueChanged)="onCellValueChanged($event)"
-              (gridReady)="onGridReady($event)"
-              [pagination]="true"
-        
-            >
-            </ag-grid-angular>
+                    <ag-grid-angular style="height: 80vh;" class="ag-theme-alpine" [columnDefs]="columnDefs"
+                        [defaultColDef]="defaultColDef" [rowData]="rowData"
+                        (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)"
+                        [pagination]="true">
+                    </ag-grid-angular>
+                </div>
             </div>
-          </div>
         </div>
-       
-      </div>
+
+    </div>
 
 </div>

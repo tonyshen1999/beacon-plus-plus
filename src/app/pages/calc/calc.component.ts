@@ -14,6 +14,8 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { CalcService } from './calc.service';
+import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 
 @Component({
   selector: 'app-calc',
@@ -23,8 +25,11 @@ import { CalcService } from './calc.service';
 export class CalcComponent implements OnInit {
   private gridApi!: GridApi;
   period:string;
-  constructor(private calcService:CalcService, private periodService:PeriodService) { }
+  constructor(private calcService:CalcService, private periodService:PeriodService,private modalService:NgbModal) { }
   public rowData: any[]|null = null;
+  closeResult:string;
+  calcComplete:boolean = false;
+  calcLog:any;
 
   public defaultColDef: ColDef = {
     flex: 1,
@@ -34,6 +39,7 @@ export class CalcComponent implements OnInit {
     sortable:true,
 
   };
+
   public columnDefs: ColDef[] = [
     {
       field: 'entity_name',
@@ -46,8 +52,11 @@ export class CalcComponent implements OnInit {
       
     },
   ];
+
   ngOnInit(): void {
-    
+
+    this.calcComplete = false;
+
     this.periodService.pullPeriod().subscribe(
       data =>{
         let period_list = [];
@@ -74,6 +83,27 @@ export class CalcComponent implements OnInit {
       });
       this.pullEntities()
   }
+
+  open(calc) {
+		this.modalService.open(calc, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+  }
+  
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+	}
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
   }
@@ -86,8 +116,9 @@ export class CalcComponent implements OnInit {
       "scn_version":Number(sessionStorage.getItem("scnVersion")),
       "entities": this.rowData
     };
-    this.calcService.calculate(obj).subscribe(data=>{
-      console.log(data)
+    this.calcLog = this.calcService.calculate(obj).subscribe(data=>{
+      this.calcLog = data
+      this.calcComplete = true
     });
   }
   pullEntities(){
