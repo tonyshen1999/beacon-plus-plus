@@ -37,4 +37,12 @@ export class CalcService {
     return this.http.post("http://127.0.0.1:8000/clear-calc/",queryParams)
 
   }
+
+  calcLogList():Observable<any>{
+
+    let queryParams = {"scn_id":sessionStorage.getItem("scnID"),"scn_version":sessionStorage.getItem("scnVersion")}
+
+    return this.http.get("http://127.0.0.1:8000/calc-log-list/",{headers:this.httpHeaders,params:queryParams})
+  }
+
 }

@@ -83,6 +83,94 @@
 
   </ng-template>
 
+  <ng-template #version let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Save as a new Version</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+      <form #fv="ngForm" (ngSubmit)="createVersion(fv)" novalidate>
+        <div class="modal-body">
+
+
+
+
+          <div clas="input-group">
+
+            <label for="description">Scenario Notes</label>
+            <input name="description" class="form-control" ngModel required #first="ngModel" style="color:black"
+              type="textarea" placeholder="Write any notes/descriptions for new version here">
+
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+
+          <div class="input-group">
+            <button type="submit" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Save</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+
+
+
+  </ng-template>
+
+
+  <ng-template #resetCalcModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Resetting Calculation</h4>
+        <button *ngIf="resetCalcBool==true" type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+     
+        <div class="modal-body">
+          <p *ngIf="resetCalcBool==false">Resetting Calculation...</p>
+          <p *ngIf="resetCalcBool==true">Calculated Accounts and Adjustments were successfully cleared</p>
+        </div>
+
+
+    </div>
+
+  </ng-template>
+
+  <ng-template #resetDataModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Resetting Calculation</h4>
+        <button *ngIf="resetDataBool==true" type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+     
+        <div class="modal-body">
+          <p *ngIf="resetDataBool==false">Resetting Data...</p>
+          <p *ngIf="resetDataBool==true">All Accounts and Adjustments were successfully reset</p>
+        </div>
+
+
+    </div>
+
+  </ng-template>
 
   <div class="row">
 
@@ -207,7 +295,7 @@
                   <td>
 
                     <p class="title">
-                      <a href="#" routerLinkActive="active" (click)="createVersion()">
+                      <a href="javascript:;" routerLinkActive="active" data-target="#version" (click)="open(version)">
                         Save as new version
                       </a>
                       <p class=" text-muted">
@@ -218,7 +306,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <a href="javascript:;" routerLinkActive="active" (click)="resetCalc()">
+                    <a href="javascript:;" routerLinkActive="active" (click)="[resetCalc(),open(resetCalcModal)]">
                       Reset Calculation
 
                     </a>
@@ -230,7 +318,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <a href="javascript:;" routerLinkActive="active" (click)="resetData()">
+                    <a href="javascript:;" routerLinkActive="active" (click)="[resetData(),open(resetDataModal)]">
                       Reset Data
                       </a>
                     <p class=" text-muted">

@@ -21,6 +21,10 @@ export class DashboardComponent implements OnInit {
   public scnId:number;
   public scnVersion:number;
   public scnName:string;
+  public resetCalcBool:boolean = false;
+  public resetDataBool:boolean = false;
+  public calcLogTable:any;
+
   period:string = "N/A";
   versions:any[]=[];
   closeResult:string;
@@ -34,7 +38,7 @@ export class DashboardComponent implements OnInit {
     // console.log("nice")
   }
   createPeriod = (f) => {
-    console.log(f.id)
+    console.log(f)
     this.dashboardService.createPeriod(f).subscribe(
       data => {
         // this.scenarios.push(data);
@@ -46,12 +50,25 @@ export class DashboardComponent implements OnInit {
     );
     
   }
-  createVersion = () =>{
-    this.dashboardService.newVersion().subscribe(
+
+
+  pullCalcLogTable(){
+    this.calcService.calcLogList().subscribe(data=>{
+      console.log(data)
+    });
+  }
+
+  createVersion = (fv) =>{
+
+    this.dashboardService.newVersion(fv.value).subscribe(
       data =>{
 
       }
     )
+    let newVersion = (parseInt(sessionStorage.getItem("scnVersion"))+1).toString()
+    this.scnVersion++;
+    sessionStorage.setItem("scnVersion",newVersion)
+    // this.pushVersionLog()
     this.ngOnInit()
 
   }
@@ -73,14 +90,17 @@ export class DashboardComponent implements OnInit {
   resetCalc(){
     this.calcService.clearCalc(this.period).subscribe(data=>{
       console.log(data)
-    })
 
+    })
+    this.resetCalcBool = true
+    
   }
 
   resetData(){
     this.calcService.clearData(this.period).subscribe(data=>{
       console.log(data)
     })
+    this.resetDataBool = true
   }
 	open(content) {
 		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
@@ -128,13 +148,19 @@ export class DashboardComponent implements OnInit {
           this.period= period_string
       });
   }
+
+
+
   ngOnInit() {
 
     this.scnId = Number(sessionStorage.getItem("scnID"));
     this.scnVersion = Number(sessionStorage.getItem("scnVersion"));
     this.scnName = sessionStorage.getItem("scnName");
+    this.resetCalcBool = false;
+    this.resetDataBool = false;
     this.pullPeriod()
     this.pushVersionLog()
+    this.pullCalcLogTable()
     
     var gradientChartOptionsConfigurationWithTooltipBlue: any = {
       maintainAspectRatio: false,

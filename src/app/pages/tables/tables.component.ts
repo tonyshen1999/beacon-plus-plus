@@ -70,6 +70,7 @@ export class TablesComponent implements OnInit {
 
 
   pullTable(table){
+    this.currentTableName = table
     this.tablesService.getTable(table).subscribe(
       data => {
         // console.log(table);
@@ -87,7 +88,7 @@ export class TablesComponent implements OnInit {
 
         this.gridApi.setColumnDefs(colDefs)
         this.gridApi.setRowData(data)
-        this.currentTableName = table
+        
       }
     );
   }
