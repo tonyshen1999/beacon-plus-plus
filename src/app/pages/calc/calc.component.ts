@@ -48,7 +48,11 @@ export class CalcComponent implements OnInit {
       showDisabledCheckboxes: true,
     },
     {
-      field: 'pd_name',
+      field: 'period_name',
+      
+    },
+    {
+      field: 'action',
       
     },
   ];
@@ -122,33 +126,39 @@ export class CalcComponent implements OnInit {
     });
   }
   pullEntities(){
-    this.calcService.getRelationships().subscribe(data=>{
-      data = data["relationships"]
-      
-      let children = new Set<string>(); 
-      let parent = new Set<string>(); 
+    this.calcService.getCalcScript(this.period).subscribe(data=>{
+      data = data["calc_script"]
       console.log(data)
-      for(let d of data){
-        children.add(d["child_name"])
-        parent.add(d["parent_name"])
-      }
-      let children_array = Array.from(children);
-      let parent_array = Array.from(parent)
-      console.log(children_array)
-      console.log(parent_array)
-      let all_entities = children_array.concat(parent_array)
+      this.gridApi.setRowData(data)
+      this.rowData = data
 
-      let rowData = []
-
-      for(let e of all_entities){
-        rowData.push({
-          "entity_name":e,
-          "pd_name":this.period
-        })
-      }
-      
-      this.gridApi.setRowData(rowData)
-      this.rowData = rowData
     });
+    // this.calcService.getRelationships().subscribe(data=>{
+    //   data = data["relationships"]
+      
+    //   let children = new Set<string>(); 
+    //   let parent = new Set<string>(); 
+    //   for(let d of data){
+    //     children.add(d["child_name"])
+    //     parent.add(d["parent_name"])
+    //   }
+    //   let children_array = Array.from(children);
+    //   let parent_array = Array.from(parent)
+
+    //   let all_entities = children_array.concat(parent_array)
+
+    //   let rowData = []
+
+    //   for(let e of all_entities){
+    //     rowData.push({
+    //       "entity_name":e,
+    //       "pd_name":this.period
+    //     })
+    //   }
+      
+    //   // this.gridApi.setRowData(rowData)
+    //   // this.rowData = rowData
+    //   console.log(rowData)
+    // });
   }
 }

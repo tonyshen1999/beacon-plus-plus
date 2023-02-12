@@ -15,6 +15,16 @@ export class CalcService {
     return this.http.get("http://127.0.0.1:8000/rel/",{headers:this.httpHeaders,params:queryParams});
   }
 
+  getCalcScript(period:string):Observable<any>{
+
+    let queryParams = {"scn_id":sessionStorage.getItem("scnID"),
+                       "version":sessionStorage.getItem("scnVersion"),
+                       "period":period
+                      };
+    console.log(queryParams)
+    return this.http.get("http://127.0.0.1:8000/calc-script/",{headers:this.httpHeaders,params:queryParams});
+  }
+
   calculate(calcObject:any): Observable<any>{
 
     return this.http.post("http://127.0.0.1:8000/calc/",calcObject)
