@@ -33,7 +33,7 @@ export class TablesComponent implements OnInit {
 
   tableList:string[]=Array.from(this.tablesService.pathMap.keys());
   currentTableHeaders:string[] = [];
-  
+  disregardedCols = new Set<string>(["scenario","period","entity"])
 
   constructor(private http:HttpClient, private tablesService:TablesService, private periodService:PeriodService) {}
 
@@ -56,7 +56,7 @@ export class TablesComponent implements OnInit {
             }
             break;
           }
-          // console.log("hi hi ")
+
           let period_string = period_list[0]["period"];
           if (period_list.length>1){
             period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
@@ -81,10 +81,18 @@ export class TablesComponent implements OnInit {
         colDefs.length = 0;
         
         data = data[tableKey];
+  
         this.rowData = data;
         console.log(data)
         const keys = Object.keys(data[0]);
-        keys.forEach(key => colDefs.push({field:key,filterParams:saleFilterParams}));
+        // keys.forEach(key => colDefs.push({field:key,filterParams:saleFilterParams}));
+
+        for(let key of keys){
+          if(!this.disregardedCols.has(key)){
+            colDefs.push({field:key,filterParams:saleFilterParams})
+          }
+          
+        }
 
         this.gridApi.setColumnDefs(colDefs)
         this.gridApi.setRowData(data)

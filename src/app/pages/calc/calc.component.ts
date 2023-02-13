@@ -48,7 +48,7 @@ export class CalcComponent implements OnInit {
       showDisabledCheckboxes: true,
     },
     {
-      field: 'period_name',
+      field: 'pd_name',
       
     },
     {
