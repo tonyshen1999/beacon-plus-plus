@@ -12,9 +12,29 @@ export class DashboardService {
   constructor(private http:HttpClient) { 
     
   }
-  getVersionLog(){
+  getVersionLog():Observable<any>{
     let queryParams = {"scn_id":sessionStorage.getItem("scnID")};
     return this.http.get(this.baseurl + 'scn/',{params:queryParams})
+  }
+  getScenarioNotes(version):Observable<any>{
+
+    let queryParams = {
+      "scn_id":sessionStorage.getItem("scnID"),
+      "version":version
+    };
+    return this.http.get(this.baseurl + 'scn-notes/',{params:queryParams})
+  }
+
+  updateScenarioNotes(version,description):Observable<any>{
+    
+    let queryParams = {
+      "scn_id":parseInt(sessionStorage.getItem("scnID")),
+      "version":version,
+      "description":description
+    };
+    console.log(queryParams);
+    return this.http.put(this.baseurl + 'scn-notes/',{},{params:queryParams})
+
   }
 
   // Right now, create period only creates for one single period

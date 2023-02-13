@@ -24,6 +24,7 @@ export class DashboardComponent implements OnInit {
   public resetCalcBool:boolean = false;
   public resetDataBool:boolean = false;
   public calcLogTable:any;
+  public scnDescription:string;
 
   period:string = "N/A";
   versions:any[]=[];
@@ -51,7 +52,29 @@ export class DashboardComponent implements OnInit {
     
   }
 
+  updateNotes = (f) =>{
 
+    
+    this.dashboardService.updateScenarioNotes(parseInt(sessionStorage.getItem("scnVersion")),this.scnDescription).subscribe(data=>{
+    })
+    // this.ngOnInit()
+    
+  }
+
+  pullScenarioNotes(version,modal){
+    this.dashboardService.getScenarioNotes(version).subscribe(data=>{
+
+      this.scnDescription = data["data"]
+    })
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+  }
   pullCalcLogTable(){
     this.calcService.calcLogList().subscribe(data=>{
       console.log(data)
@@ -161,6 +184,11 @@ export class DashboardComponent implements OnInit {
     this.pullPeriod()
     this.pushVersionLog()
     this.pullCalcLogTable()
+    this.scnDescription = ""
+    this.dashboardService.getScenarioNotes(parseInt(sessionStorage.getItem("scnVersion"))).subscribe(data=>{
+      
+      this.scnDescription = data["data"]
+    })
     
     var gradientChartOptionsConfigurationWithTooltipBlue: any = {
       maintainAspectRatio: false,

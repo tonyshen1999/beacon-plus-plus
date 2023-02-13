@@ -103,8 +103,8 @@
           <div clas="input-group">
 
             <label for="description">Scenario Notes</label>
-            <input name="description" class="form-control" ngModel required #first="ngModel" style="color:black"
-              type="textarea" placeholder="Write any notes/descriptions for new version here">
+            <textarea name="description" class="form-control" ngModel required #first="ngModel" style="color:black"
+              placeholder="Write any notes/descriptions for new version here"></textarea>
 
           </div>
 
@@ -127,6 +127,79 @@
 
   </ng-template>
 
+  <ng-template #currentNotes let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Scenario Notes</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+      <form #cN="ngForm" (ngSubmit)="updateNotes(cN)" novalidate>
+        <div class="modal-body">
+
+
+
+          <div clas="input-group">
+
+            <label for="description">Scenario Notes</label>
+            <textarea name="description" class="form-control" ngModel required #first="ngModel" [(ngModel)]="scnDescription" style="color:black"
+            ></textarea>
+
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+
+          <div class="input-group">
+            <button type="submit" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Save</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+
+
+
+  </ng-template>
+
+  <ng-template #scnNotes let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Scenario Notes</h4>
+        <button type="button" class="close" (click)="[modal.dismiss('Cross click'),ngOnInit()]"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+     
+        <div class="modal-body">
+
+          <p>
+            {{scnDescription}}
+          </p>
+
+          
+
+
+        </div>
+        
+
+    </div>
+
+
+
+
+  </ng-template>
 
   <ng-template #resetCalcModal let-modal>
     <div class="modal-content">
@@ -234,7 +307,7 @@
             <div class="col">
               <h4 class="text-center">Scenario Notes</h4>
               <p class="text-center">
-                <a href="javascript:;" routerLinkActive="active" data-target="#myModal" (click)="open(content)">
+                <a href="javascript:;" routerLinkActive="active" data-target="#myModal" (click)="open(currentNotes)">
 
                   View Scenario Notes
                 </a>
@@ -370,14 +443,16 @@
                 <tr>
                   <th>Version</th>
                   <th>Modify Date</th>
+                  <th>Notes</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let v of versions">
-                  <td>{{v.version}}</td>
+                  <td *ngIf="v.version==scnVersion">{{v.version}}*</td>
+                  <td *ngIf="v.version!=scnVersion">{{v.version}}</td>
                   <td>{{v.modify_date|date}}</td>
-                  <td></td>
+                  <td><a href="javascript:;" routerLinkActive="active" data-target="#version" (click)="[pullScenarioNotes(v.version,scnNotes)]">View</a></td>
                   <td class=" text-center"><a>Revert</a></td>
                 </tr>
 
