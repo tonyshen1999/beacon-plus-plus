@@ -16,6 +16,19 @@ export class DashboardService {
     let queryParams = {"scn_id":sessionStorage.getItem("scnID")};
     return this.http.get(this.baseurl + 'scn/',{params:queryParams})
   }
+
+  clone(fcl):Observable<any>{
+    let queryParams = {
+      "scn_id":parseInt(sessionStorage.getItem("scnID")),
+      "new_id":fcl.newID,
+      "new_name":fcl.newName
+    }
+  
+
+    return this.http.post(this.baseurl + 'clone-scn/', queryParams,
+      {headers: this.httpHeaders});
+  }
+
   getScenarioNotes(version):Observable<any>{
 
     let queryParams = {
@@ -34,6 +47,16 @@ export class DashboardService {
     };
     console.log(queryParams);
     return this.http.put(this.baseurl + 'scn-notes/',{},{params:queryParams})
+
+  }
+
+  deleteScenario():Observable<any>{
+    let queryParams = {
+      "scn_id":parseInt(sessionStorage.getItem("scnID")),
+    }
+
+    return this.http.post(this.baseurl + 'delete-scn/', queryParams,
+      {headers: this.httpHeaders});
 
   }
 

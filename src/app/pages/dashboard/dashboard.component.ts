@@ -5,6 +5,8 @@ import { NgForm } from '@angular/forms';
 import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { DashboardService } from './dashboard.service';
 import { CalcService } from '../calc/calc.service';
+import { ReadexcelDirective } from 'src/app/directives/readexcel.directive';
+import { RouterLink } from '@angular/router';
 @Component({
   selector: "app-dashboard",
   templateUrl: "dashboard.component.html"
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit {
   public resetDataBool:boolean = false;
   public calcLogTable:any;
   public scnDescription:string;
+  public deleteButtonActive:boolean;
 
   period:string = "N/A";
   versions:any[]=[];
@@ -38,6 +41,28 @@ export class DashboardComponent implements OnInit {
     
     // console.log("nice")
   }
+
+  cloneScenario(fcl){
+
+    this.dashboardService.clone(fcl.value).subscribe(data=>{
+
+    })
+
+    sessionStorage.setItem("scnID",fcl.value.newID.toString())
+    sessionStorage.setItem("scnVersion","1")
+    sessionStorage.setItem("scnName",fcl.value.newName)
+    this.ngOnInit()
+  }
+
+  deleteScenario(del){
+    
+    if(del.value.delete == "DELETE"){
+      this.dashboardService.deleteScenario().subscribe(data=>{
+      
+      });
+    }
+  }
+
   createPeriod = (f) => {
     console.log(f)
     this.dashboardService.createPeriod(f).subscribe(
@@ -181,10 +206,11 @@ export class DashboardComponent implements OnInit {
     this.scnName = sessionStorage.getItem("scnName");
     this.resetCalcBool = false;
     this.resetDataBool = false;
-    this.pullPeriod()
-    this.pushVersionLog()
-    this.pullCalcLogTable()
-    this.scnDescription = ""
+    this.pullPeriod();
+    this.pushVersionLog();
+    this.pullCalcLogTable();
+    this.scnDescription = "";
+    this.deleteButtonActive = false
     this.dashboardService.getScenarioNotes(parseInt(sessionStorage.getItem("scnVersion"))).subscribe(data=>{
       
       this.scnDescription = data["data"]

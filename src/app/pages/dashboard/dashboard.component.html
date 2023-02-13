@@ -127,6 +127,94 @@
 
   </ng-template>
 
+  <ng-template #clone let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Clone Scenario</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+      <form #fcl="ngForm" (ngSubmit)="cloneScenario(fcl)" novalidate>
+        <div class="modal-body">
+
+
+          <div clas="input-group">
+
+            <label for="newID">New Scenario ID</label>
+            <input name="newID" class="form-control" ngModel required #first="ngModel" style="color:black" type = "number">
+
+          </div>
+
+          <div clas="input-group">
+
+            <label for="newName">New Scenario Name</label>
+            <input name="newName" class="form-control" ngModel required #first="ngModel" style="color:black">
+
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+
+          <div class="input-group">
+            <button type="submit" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Save</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+
+
+
+  </ng-template>
+
+  <ng-template #delete let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Delete Scenario</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+      <form #del="ngForm" (ngSubmit)="deleteScenario(del)" novalidate>
+        <div class="modal-body">
+
+
+          <div clas="input-group">
+
+            <label for="delete">Type 'DELETE' to delete scenario</label>
+            <input name="delete" class="form-control" ngModel required #first="ngModel" style="color:black">
+
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+
+          <div class="input-group">
+            <button type="submit" href = "#" class="btn btn-primary" (click)="modal.dismiss('Cross click')">Save</button>
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+
+
+
+
+  </ng-template>
+
+
   <ng-template #currentNotes let-modal>
     <div class="modal-content">
       <div class="modal-header">
@@ -402,7 +490,8 @@
                 </tr>
                 <tr>
                   <td>
-                    <p class=" title">Clone Scenario</p>
+                    <a href="javascript:;" routerLinkActive="active" (click)="[open(clone)]">Clone Scenario</a>
+                    
                     <p class=" text-muted">
                       Create a new scenario by copying current scenario into new scenario id
                     </p>
@@ -418,7 +507,9 @@
                 </tr>
                 <tr>
                   <td>
-                    <p class=" title">Delete Scenario</p>
+                    <a href="javascript:;" routerLinkActive="active" (click)="[resetData(),open(resetDataModal)]">
+                      Delete Scenario
+                    </a>
                     <p class=" text-muted">
                       Delete this scenario and all saved versions
                     </p>
