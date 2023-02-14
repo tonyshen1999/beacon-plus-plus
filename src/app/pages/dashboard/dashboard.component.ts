@@ -6,7 +6,7 @@ import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
 import { DashboardService } from './dashboard.service';
 import { CalcService } from '../calc/calc.service';
 import { ReadexcelDirective } from 'src/app/directives/readexcel.directive';
-import { RouterLink } from '@angular/router';
+import {Router} from '@angular/router'
 @Component({
   selector: "app-dashboard",
   templateUrl: "dashboard.component.html"
@@ -32,7 +32,12 @@ export class DashboardComponent implements OnInit {
   period:string = "N/A";
   versions:any[]=[];
   closeResult:string;
-  constructor(private periodService:PeriodService,private modalService:NgbModal, private dashboardService:DashboardService, private calcService:CalcService) {}
+  constructor(private periodService:PeriodService,
+    private modalService:NgbModal, 
+    private dashboardService:DashboardService, 
+    private calcService:CalcService,
+    private router: Router
+    ) {}
 
   onSubmit(f:NgForm){
     this.createPeriod(f.value)
@@ -60,6 +65,7 @@ export class DashboardComponent implements OnInit {
       this.dashboardService.deleteScenario().subscribe(data=>{
       
       });
+      this.router.navigate([''])
     }
   }
 

@@ -174,7 +174,7 @@
 
   </ng-template>
 
-  <ng-template #delete let-modal>
+  <ng-template #deleteScn let-modal>
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Delete Scenario</h4>
@@ -507,7 +507,7 @@
                 </tr>
                 <tr>
                   <td>
-                    <a href="javascript:;" routerLinkActive="active" (click)="[resetData(),open(resetDataModal)]">
+                    <a href="javascript:;" routerLinkActive="active" (click)="[open(deleteScn)]">
                       Delete Scenario
                     </a>
                     <p class=" text-muted">
