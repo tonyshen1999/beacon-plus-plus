@@ -12,6 +12,8 @@ import { MissingColumnsComponent } from 'src/app/pages/import/missing-columns/mi
 import {TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
 import {PanZoomChartComponent} from 'src/app/pan-zoom-chart/pan-zoom-chart.component'
 import { CalcComponent } from 'src/app/pages/calc/calc.component';
+import { AttributeConfigComponent } from "../../pages/attribute-config/attribute-config.component";
+
 // import { RtlComponent } from "../../pages/rtl/rtl.component";
 
 export const AdminLayoutRoutes: Routes = [
@@ -27,6 +29,7 @@ export const AdminLayoutRoutes: Routes = [
   { path: "ag", component: TestAgGridComponent },
   { path: "org-chart", component: PanZoomChartComponent },
   { path: "calc", component: CalcComponent },
+  { path: "atr-congif", component: AttributeConfigComponent },
 
   // { path: "rtl", component: RtlComponent }
 ];

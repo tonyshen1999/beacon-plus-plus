@@ -43,7 +43,7 @@ export const ROUTES: RouteInfo[] = [
     class: ""
   },
   {
-    path: "/notifications",
+    path: "/atr-congif",
     title: "Attribute Configuration",
     rtlTitle: "إخطارات",
     icon: "icon-settings",

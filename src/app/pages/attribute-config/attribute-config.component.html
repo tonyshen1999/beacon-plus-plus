@@ -1,0 +1,73 @@
+<div class=" content">
+    <div class=" row">
+      <div class=" col-md-6">
+        <div class=" card">
+          <div class=" card-header">
+            <h4 class=" card-title">Notifications Style</h4>
+          </div>
+          <div class=" card-body">
+            <p>Hi</p>
+          </div>
+        </div>
+      </div>
+      <div class=" col-md-6">
+        <div class=" card">
+          <div class=" card-header">
+            <h4 class=" card-title">Notification states</h4>
+          </div>
+          <div class=" card-body">
+            <p>hi</p>
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class=" col-md-12">
+        <div class=" card">
+          <div class=" card-body">
+            <div class=" places-buttons">
+              <div class=" row">
+                <div class=" col-md-6 ml-auto mr-auto text-center">
+                  <h4 class=" card-title">Default Attributes Table</h4>
+                  <p class=" category">Attributes used in calculation</p>
+                </div>
+              </div>
+              <div class=" row">
+                <table class=" table tablesorter" id="">
+                    <thead class=" text-primary">
+                      <tr>
+                        <th>Attribute Name</th>
+                        <th>Attribute Value</th>
+                        <th>Begin Date</th>
+                        <th>End Date</th>
+                        <th>Entity Type</th>
+                        <th>Scenario Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let da of defaultAttributes">
+                        <td>{{da.attribute_name}}</td>
+                        <td>{{da.attribute_value}}</td>
+                        <td>{{da.begin_date | date}}</td>
+                        <td>{{da.end_date | date}}</td>
+                        <td>{{da.entity_type}}</td>
+                        <td>{{da.scenario}}</td>
+                        
+                        <ng-template #notMissing>
+                          <td>-</td>
+                        </ng-template>
+                      </tr>
+                    </tbody>
+                    
+                  </table>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

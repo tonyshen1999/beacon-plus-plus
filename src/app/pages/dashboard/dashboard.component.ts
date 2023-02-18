@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit {
   period:string = "N/A";
   versions:any[]=[];
   closeResult:string;
+  period_start:string = "";
+  period_end:string = "";
   constructor(private periodService:PeriodService,
     private modalService:NgbModal, 
     private dashboardService:DashboardService, 
@@ -180,7 +182,8 @@ export class DashboardComponent implements OnInit {
     this.periodService.pullPeriod().subscribe(
       data =>{
         let period_list = [];
-          // console.log(data)
+          console.log("period data")
+          console.log(data)
           let periods = Array.from(Object.keys(data));
 
           // UPDATE THIS TO DISPLAY DATE RANGE AND MOVE TO SERVICE
@@ -194,6 +197,8 @@ export class DashboardComponent implements OnInit {
           }
           // console.log("hi hi ")
           let period_string = period_list[0]["period"];
+          this.period_start = period_list[0]["begin_date"]
+          this.period_end = period_list[0]["end_date"]
           if (period_list.length>1){
             period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
           }

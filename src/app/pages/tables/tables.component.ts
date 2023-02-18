@@ -30,7 +30,8 @@ export class TablesComponent implements OnInit {
   obj:any;
   public rowData: any[]|null = null;
   closeResult:string;
-
+  period_start:string = "";
+  period_end:string = "";
   tableList:string[]=Array.from(this.tablesService.pathMap.keys());
   currentTableHeaders:string[] = [];
   disregardedCols = new Set<string>(["scenario","period","entity"])
@@ -58,6 +59,8 @@ export class TablesComponent implements OnInit {
           }
 
           let period_string = period_list[0]["period"];
+          this.period_start = period_list[0]["begin_date"]
+          this.period_end = period_list[0]["end_date"]
           if (period_list.length>1){
             period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
           }

@@ -18,6 +18,7 @@ import { AgGridModule } from 'ag-grid-angular';
 // import { RtlComponent } from "../../pages/rtl/rtl.component";
 
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
+import { AttributeConfigComponent } from 'src/app/pages/attribute-config/attribute-config.component';
 
 @NgModule({
   imports: [
@@ -37,6 +38,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
     TypographyComponent,
     NotificationsComponent,
     MapComponent,
+    AttributeConfigComponent
     // RtlComponent
   ]
 })
