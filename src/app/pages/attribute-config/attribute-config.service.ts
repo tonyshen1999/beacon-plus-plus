@@ -11,9 +11,14 @@ export class AttributeConfigService {
   baseurl = "http://127.0.0.1:8000/";
 
 
-  getDefaultAttributes():Observable<any>{
+  getDefaultAttributes(filter):Observable<any>{
+    let queryParams = {
+      "scn_id":parseInt(sessionStorage.getItem("scnID")),
+      "version":parseInt(sessionStorage.getItem("scnVersion")),
+      "scenario":filter
+    };
 
-    return this.http.get(this.baseurl + 'def-atr/')
+    return this.http.get(this.baseurl + 'atr-filter/',{params:queryParams})
   }
 
 }

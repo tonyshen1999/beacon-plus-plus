@@ -29,6 +29,16 @@ export class DashboardService {
       {headers: this.httpHeaders});
   }
 
+  revertVersion(version):Observable<any>{
+    let queryParams = {
+      "scn_id":parseInt(sessionStorage.getItem("scnID")),
+      "version":version
+    }
+  
+    return this.http.post(this.baseurl + 'revert/',{params:queryParams})
+
+  }
+
   getScenarioNotes(version):Observable<any>{
 
     let queryParams = {

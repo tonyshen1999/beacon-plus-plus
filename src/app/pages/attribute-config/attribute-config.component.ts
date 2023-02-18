@@ -9,6 +9,7 @@ import { AttributeConfigService } from './attribute-config.service';
 export class AttributeConfigComponent implements OnInit {
   
   defaultAttributes:any
+  selected: boolean = false;
 
   constructor(private attributeConfigurationService:AttributeConfigService) { }
   
@@ -17,7 +18,7 @@ export class AttributeConfigComponent implements OnInit {
   }
   getDefaultAttributes(){
 
-    this.attributeConfigurationService.getDefaultAttributes().subscribe(data=>{
+    this.attributeConfigurationService.getDefaultAttributes("Default").subscribe(data=>{
 
       console.log(data)
       this.defaultAttributes = data

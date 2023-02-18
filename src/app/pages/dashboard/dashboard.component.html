@@ -554,7 +554,7 @@
                   <td *ngIf="v.version!=scnVersion">{{v.version}}</td>
                   <td>{{v.modify_date|date}}</td>
                   <td><a href="javascript:;" routerLinkActive="active" data-target="#version" (click)="[pullScenarioNotes(v.version,scnNotes)]">View</a></td>
-                  <td class=" text-center"><a>Revert</a></td>
+                  <td class=" text-center"><a href="javascript:;" routerLinkActive="active" data-target="#version" (click)="revertVersion(v.version)">Revert</a></td>
                 </tr>
 
               </tbody>

@@ -177,7 +177,15 @@ export class DashboardComponent implements OnInit {
 		} else {
 			return `with: ${reason}`;
 		}
-	}
+  }
+  
+  revertVersion(version){
+    this.dashboardService.revertVersion(version).subscribe(data=>{
+      sessionStorage.setItem("scnVersion",data["new_version"])
+    })
+    this.ngOnInit()
+  }
+
   pullPeriod(){
     this.periodService.pullPeriod().subscribe(
       data =>{
