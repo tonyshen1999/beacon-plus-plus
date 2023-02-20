@@ -2,17 +2,22 @@ import { Component, OnInit } from "@angular/core";
 import {HttpClient} from '@angular/common/http'
 import { TablesService } from './tables.service';
 import { PeriodService } from 'src/app/services/period.service';
+import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 import { TestAgGridComponent} from 'src/app/test-ag-grid/test-ag-grid.component'
 import {
   CellValueChangedEvent,
   ColDef,
   ValueGetterParams,
   ValueSetterParams,
+  SelectionChangedEvent,
+  IRowNode,
   GridApi,
   GridReadyEvent, ITextFilterParams,INumberFilterParams
 } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { ImportService } from '../import/import.service';
 
 @Component({
   selector: "app-tables",
@@ -34,13 +39,28 @@ export class TablesComponent implements OnInit {
   tableList:string[]=Array.from(this.tablesService.pathMap.keys());
   currentTableHeaders:string[] = [];
   disregardedCols = new Set<string>(["scenario","period","entity"])
+  edited:boolean = false;
+  disableSave:boolean = true;
+  updatedRows:number = 0;
+  saveComplete:boolean = false;
+  disableDelete:boolean = false;
 
-  constructor(private http:HttpClient, private tablesService:TablesService, private periodService:PeriodService) {}
+  constructor(
+    private http:HttpClient, 
+    private tablesService:TablesService, 
+    private periodService:PeriodService, 
+    private importService:ImportService,
+    private modalService:NgbModal, 
+    ) {}
 
   ngOnInit() {
-
+    this.disableDelete = true;
+    this.saveComplete = false;
+    this.updatedRows = 0
+    this.edited = false;
     this.pullTable("Thing Tables");
     this.currentTableName = "Thing Tables"
+    this.disableSave = true;
     this.periodService.pullPeriod().subscribe(
       data =>{
         let period_list = [];
@@ -64,14 +84,13 @@ export class TablesComponent implements OnInit {
             period_string = period_list[0]["period"] + " - " + period_list[period_list.length-1]["period"]
           }
 
-          // console.log(period_string)
           this.period= period_string
       });
   }
 
 
-
   pullTable(table){
+
     this.currentTableName = table
     this.tablesService.getTable(table).subscribe(
       data => {
@@ -93,7 +112,6 @@ export class TablesComponent implements OnInit {
           if(!this.disregardedCols.has(key)){
             colDefs.push({field:key,filterParams:saleFilterParams})
           }
-          
         }
 
         this.gridApi.setColumnDefs(colDefs)
@@ -105,16 +123,17 @@ export class TablesComponent implements OnInit {
 
   private determineFilter(key){
     if (key == "amount" || key == "adj_amount"){
-      console.log("sldfkjaslkdfjalksdfjaslkdfj")
       return saleFilterParams;
     }
     else{
       return {} as ITextFilterParams
     }
   }
+
   onGridReady(params: GridReadyEvent) {
     this.gridApi = params.api;
   }
+
   public defaultColDef: ColDef = {
     flex: 1,
     resizable: true,
@@ -131,13 +150,133 @@ export class TablesComponent implements OnInit {
 
   onCellValueChanged(event: CellValueChangedEvent) {
     console.log('Data after change is', event.data);
+    this.disableSave = false;
+    console.log(this.rowData)
+    this.updatedRows++;
+    this.saveComplete = false;
   }
 
+
+
+  open(content) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+    );
+    this.updatedRows = 0;
+  }
+  
+	private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+  }
+  onRemoveSelected() {
+    const selectedData = this.gridApi.getSelectedRows();
+    const res = this.gridApi.applyTransaction({ remove: selectedData })!;
+    this.disableSave = false;
+    this.rowData = [];
+    this.gridApi.forEachNode(node => this.rowData.push(node.data));
+  
+    
+  }
+  onSave(){
+    
+    let columnHash:Map <string,string> = new Map<string,string>([
+      ["account_name","Account Name"],
+      ["amount","Amount"],
+      ["collection","Collection"],
+      ["period_name","Period"],
+      ["entity_name","Entity"],
+      ["name","Thing"],
+      ["entity_type","Type"],
+      ["parent_name","Parent"],
+      ["child_name","Child"],
+      ["ownership_percentage","Ownership Percentage"],
+      ["attribute_value","AttributeValue"],
+      ["attribute_name","AttributeName"],
+      ["begin_date","AttributeStartDate"],
+      ["end_date","AttributeEndDate"],
+      ["entity_name","Entity"],
+    ])
+
+    
+    let modelName = this.currentTableName.replace(" Tables","");
+
+    let jsonObject = {}
+    let objData = [];
+
+    for(let row of this.rowData){
+      let obj = {}
+      columnHash.forEach((value: string, key: string) => {
+        
+        obj[value] = row[key]
+      });
+      objData.push(obj)
+    }
+
+    jsonObject[modelName] =objData
+      
+    console.log(jsonObject)
+    this.importService.importTable(jsonObject).subscribe(data=>{
+      console.log(data)
+      this.saveComplete = true
+    })
+
+    this.disableSave = true;
+
+  }
   public columnDefs: ColDef[] = getColumnDefs();
 
+  onSelectionChanged(event: SelectionChangedEvent) {
+    const selectedData = this.gridApi.getSelectedRows();
+    console.log(this.getSelectedRowData());
+  }
+  getSelectedRowData() {
+    const selectedData = this.gridApi.getSelectedRows();
+    // alert(`Selected Data:\n${JSON.stringify(selectedData)}`);
+    if (selectedData.length>0){
+      this.disableDelete = false;
+    }
+    else{
+      this.disableDelete = true;
+    }
+    console.log(selectedData)
+    return selectedData;
+  }
 
 
+
+  createNewRowData() {
+    const newData = {};
+
+    let colDefs = this.gridApi.getColumnDefs()
+
+    for (let c of colDefs){
+      newData[c["colId"]] = ""
+    }
+    
+    
+      const newItems = [
+        colDefs
+      ];
+      const res = this.gridApi.applyTransaction({
+        add: newItems,
+        addIndex: 0,
+      })!;
+
+    
+  }
 }
+
 function getColumnDefs() {
   return [
     { field: 'athlete' },
@@ -152,6 +291,7 @@ function getColumnDefs() {
     { field: 'total' },
   ];
 }
+
 var nameFilterParams: ITextFilterParams = {
   filterOptions: ['contains', 'notContains'],
   textFormatter: (r) => {
@@ -180,3 +320,11 @@ let saleFilterParams: INumberFilterParams = {
       : parseFloat(text.replace(',', '.').replace('$', ''));
   },
 };
+const parseNode = (node: IRowNode, index?: number) => {
+
+  console.log(
+    index + ' -> data: ' + node.data.name
+  );
+
+};
+

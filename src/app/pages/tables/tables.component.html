@@ -42,12 +42,42 @@
     </div>
   </div>
 
+  <ng-template #updates let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Saving...</h4>
+        <button type="button" class="close" (click)="[modal.dismiss('Cross click')]"><i
+            class="tim-icons icon-simple-remove"> </i></button>
+
+
+
+      </div>
+
+     
+        <div class="modal-body">
+
+          <p *ngIf="saveComplete == false">Pushing updates to database...</p>
+          <p *ngIf="saveComplete == true">Updated {{updatedRows}} rows</p>
+
+          
+
+
+        </div>
+        
+
+    </div>
+
+  </ng-template>
+
 
   <div class=" row">
     <div class=" col-md-12">
       <div class=" card">
         <div class=" card-header">
           <h2 class=" card-title">{{currentTableName}}</h2>
+          <button class = "btn btn-primary" [disabled]="disableSave" (click)="[onSave(), open(updates)]">Save</button>
+          <button class = "btn btn-secondary" style ="color:white" (click)="[createNewRowData()]">Add row</button>
+          <button class = "btn btn-danger" [disabled]="disableDelete" (click)="[onRemoveSelected()]">Delete row</button>
         </div>
         <div class=" card-body">
           <!-- <div class=" table-responsive">
@@ -76,6 +106,8 @@
           (cellValueChanged)="onCellValueChanged($event)"
           (gridReady)="onGridReady($event)"
           [pagination]="true"
+          (selectionChanged)="onSelectionChanged($event)"
+          rowSelection="multiple"
     
         >
         </ag-grid-angular>
