@@ -44,6 +44,7 @@ export class TablesComponent implements OnInit {
   updatedRows:number = 0;
   saveComplete:boolean = false;
   disableDelete:boolean = false;
+  public undoRedoCellEditingLimit = 10;
 
   constructor(
     private http:HttpClient, 

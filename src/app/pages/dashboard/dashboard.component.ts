@@ -28,7 +28,14 @@ export class DashboardComponent implements OnInit {
   public calcLogTable:any;
   public scnDescription:string;
   public deleteButtonActive:boolean;
+  public calcLogs:any;
+  public showSuccess:boolean = false;
+  public showMessage:boolean = false;
+  public showErrors:boolean = false;
+  public logData:any;
 
+
+  Object = Object;
   period:string = "N/A";
   versions:any[]=[];
   closeResult:string;
@@ -94,6 +101,20 @@ export class DashboardComponent implements OnInit {
     
   }
 
+  showCalcLog(calcLog,modal){
+    this.logData = calcLog;
+    console.log("ausdhfalskdfja;slkdjfasdf;lakjsdjf;lkasjdf;lkajsd;flkj;weifjaslidfja;weifj",this.logData)
+    this.modalService.open(modal, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+
+  }
+
   pullScenarioNotes(version,modal){
     this.dashboardService.getScenarioNotes(version).subscribe(data=>{
 
@@ -111,6 +132,8 @@ export class DashboardComponent implements OnInit {
   pullCalcLogTable(){
     this.calcService.calcLogList().subscribe(data=>{
       console.log(data)
+      this.calcLogs = data
+      console.log(this.calcLogs)
     });
   }
 

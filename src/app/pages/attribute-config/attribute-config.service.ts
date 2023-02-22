@@ -21,4 +21,6 @@ export class AttributeConfigService {
     return this.http.get(this.baseurl + 'atr-filter/',{params:queryParams})
   }
 
+
+
 }

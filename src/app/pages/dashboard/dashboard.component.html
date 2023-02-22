@@ -578,16 +578,16 @@
             <table class=" table" id="">
               <thead class=" text-primary">
                 <tr>
-                  <th>Status</th>
                   <th>Calc Date</th>
+                  <th>Status</th>
                   <th>Details</th>
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let v of versions">
-                  <td>Success</td>
-                  <td>Jan 29,2023</td>
-                  <td>View</td>
+                <tr *ngFor="let c of Object.keys(calcLogs)">
+                  <td>{{c | date: 'd/MM/yyyy H:mm'}}</td>
+                  <td> Calculated {{calcLogs[c].length}} rows</td>
+                  <td><a href="javascript:;" routerLinkActive="active" data-target="#version" (click)="[showCalcLog(calcLogs[c],calcLogModal)]">View</a></td>
 
                 </tr>
 
@@ -602,7 +602,51 @@
 
 
 
+  <ng-template #calcLogModal let-modal>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Calculation Log</h4>
+        <button type="button" class="close" (click)="modal.dismiss('Cross click')"><i
+            class="tim-icons icon-simple-remove"> </i></button>
 
+      </div>
+
+     
+        <div class="modal-body">
+          <ul style = "list-style-type: none; padding: 0; margin: 0; ">
+            <li>
+              <a href="javascript:;" routerLinkActive="active" (click)="showSuccess= !showSuccess" >Successful Calculated Records: {{logData["Success"].length}}</a>
+              <ul style = "list-style-type: none; padding: 0; margin: 0; "
+                  *ngIf = "showSuccess">
+                  <li *ngFor="let l of logData['Success']" style ="color:green">
+                    
+                    {{l["log_text"]}}
+                  </li>
+              </ul>
+            </li>
+            <li >
+              <a href="javascript:;" routerLinkActive="active" (click)="showMessage=!showMessage" >Calculated Messages: {{logData["Message"].length}}</a >
+              <ul style = "list-style-type: none; padding: 0; margin: 0; "
+                *ngIf = "showMessage">
+                <li *ngFor="let l of logData['Message']">{{l["log_text"]}}</li>
+              </ul>
+            </li>
+            <li >
+              <a href="javascript:;" routerLinkActive="active" (click)="showErrors= !showErrors" >Calculation Errors: {{logData["Errors"].length}}</a>
+              <ul style = "list-style-type: none; padding: 0; margin: 0; "
+                *ngIf = "showErrors">
+                <li *ngFor="let l of logData['Errors']" style ="color:red">
+                  {{l["log_text"]}}
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+
+    </div>
+
+  </ng-template>
 
     
 

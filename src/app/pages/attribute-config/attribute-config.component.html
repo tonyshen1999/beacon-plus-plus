@@ -36,15 +36,8 @@
       <div class=" col-md-12">
         <div class=" card">
           <div class=" card-body">
-            <div class=" places-buttons">
-              <div class=" row">
-                <div class=" col-md-6 ml-auto mr-auto text-center">
-                  <h4 class=" card-title">Default Attributes Table</h4>
-                  <p class=" category">Attributes used in calculation</p>
-                </div>
-              </div>
-              <div class=" row">
-                <table class=" table tablesorter" id="">
+            
+                <!-- <table class=" table tablesorter" id="">
                     <thead class=" text-primary">
                       <tr>
                         <th>Attribute Name</th>
@@ -70,10 +63,14 @@
                       </tr>
                     </tbody>
                     
-                  </table>
+                  </table> -->
                 
-              </div>
-            </div>
+                  <ag-grid-angular style="height: 80vh;" class="ag-theme-alpine" [columnDefs]="columnDefs"
+                  [defaultColDef]="defaultColDef" [rowData]="rowData"
+                  (cellValueChanged)="onCellValueChanged($event)" (gridReady)="onGridReady($event)"
+                  [pagination]="true">
+                 </ag-grid-angular>
+          
           </div>
         </div>
       </div>
