@@ -1,16 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { AttributeConfigService } from './attribute-config.service';
+import { NgForm } from '@angular/forms';
+import {ModalDismissReasons,NgbModal} from '@ng-bootstrap/ng-bootstrap'
+
 
 import {
   CellValueChangedEvent,
   ColDef,
   ValueGetterParams,
   ValueSetterParams,
+  ICellEditorParams,
   SelectionChangedEvent,
   IRowNode,
   GridApi,
-  GridReadyEvent, ITextFilterParams,INumberFilterParams
+  CellEditorSelectorResult,
+  GridReadyEvent, ITextFilterParams,INumberFilterParams,
+  ModuleRegistry
 } from 'ag-grid-community';
+
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
@@ -26,8 +33,11 @@ export class AttributeConfigComponent implements OnInit {
   selected: boolean = false;
   private gridApi!: GridApi;
   public rowData: any[]|null = null;
+  closeResult:string;
 
-  constructor(private attributeConfigurationService:AttributeConfigService) { }
+
+  constructor(private attributeConfigurationService:AttributeConfigService,
+    private modalService:NgbModal, ) { }
   
   ngOnInit(): void {
     this.getDefaultAttributes()
@@ -60,6 +70,8 @@ export class AttributeConfigComponent implements OnInit {
     },
     {
       field: 'attribute_value',
+      // editable: true,
+      // cellEditorSelector: this.cellEditorSelector,
       
     },
     {
@@ -72,10 +84,67 @@ export class AttributeConfigComponent implements OnInit {
     },
     {
       field: 'entity_type',
+
       
     },
 
   ];
+  // cellEditorSelector(
+  //   params: ICellEditorParams
+  // ): CellEditorSelectorResult | undefined {
+
+  //   if (params.data.attribute_name === '163JCalc') {
+  //     console.log("found 163j")
+  //     return {
+  //       component: 'agRichSelectCellEditor',
+  //       params: {
+  //         values: ['TRUE', 'FALSE'],
+  //       },
+  //       popup: true,
+  //     };
+  //   }
+
+  //   return undefined;
+  // }
+
+  open(content) {
+		this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then(
+			(result) => {
+				this.closeResult = `Closed with: ${result}`;
+			},
+			(reason) => {
+				this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+			},
+		);
+  }
+  
+  private getDismissReason(reason: any): string {
+		if (reason === ModalDismissReasons.ESC) {
+			return 'by pressing ESC';
+		} else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+			return 'by clicking on a backdrop';
+		} else {
+			return `with: ${reason}`;
+		}
+  }
+
+  pushAttributes(){
+    let objData = [];
+
+    for(let row of this.rowData){
+      objData.push(row)
+    }
+
+    this.attributeConfigurationService.pushCustomAttributes(objData).subscribe(data=>{
+      console.log(data)
+    })
+  }
+  pushDefault(){
+    this.attributeConfigurationService.pushDefaultAttributes().subscribe(data=>{
+      console.log(data);
+    })
+    this.ngOnInit()
+  }
 
   onSelectionChanged(event: SelectionChangedEvent) {
     const selectedData = this.gridApi.getSelectedRows();

@@ -11,6 +11,10 @@ import {
   ValueGetterParams,
   ValueSetterParams,
   SelectionChangedEvent,
+  RedoEndedEvent,
+  RedoStartedEvent,
+  UndoEndedEvent,
+  UndoStartedEvent,
   IRowNode,
   GridApi,
   GridReadyEvent, ITextFilterParams,INumberFilterParams
@@ -87,6 +91,14 @@ export class TablesComponent implements OnInit {
 
           this.period= period_string
       });
+  }
+
+  undo() {
+    this.gridApi.undoCellEditing();
+  }
+
+  redo() {
+    this.gridApi.redoCellEditing();
   }
 
 

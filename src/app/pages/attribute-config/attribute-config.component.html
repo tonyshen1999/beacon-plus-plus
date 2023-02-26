@@ -1,35 +1,18 @@
 <div class=" content">
     <div class=" row">
-      <div class=" col-md-6">
+      <div class=" col-md-12">
         <div class=" card">
           <div class=" card-header">
-            <h4 class=" card-title">Entity Type Specific</h4>
+            <h4 class=" card-title">Entity Attributes</h4>
           </div>
           <div class=" card-body">
             
-            
-            <ul style = "list-style-type: none; padding: 0; margin: 0; ">
-            <li >
-              <input type="checkbox" name = "CFC951AHTE">
-              <label for="CFC951AHTE">CFC 951A High Tax Election OFF  </label>
-            
-              
-            </li>
-        </ul>
-          </div>
-        </div>
-      </div>
-      <div class=" col-md-6">
-        <div class=" card">
-          <div class=" card-header">
-            <h4 class=" card-title">All Entities</h4>
-          </div>
-          <div class=" card-body">
-            <p>hi</p>
-          </div>
-        </div>
-      </div>
+            <button class = "btn btn-primary" (click)= "[pushDefault(),open(revert)]" >Revert Default</button>
+            <button class = "btn btn-secondary" style ="color:white" (click) = "[pushAttributes(),open(push)]" >Push Attributes</button>
 
+          </div>
+        </div>
+      </div>
 
 
 
@@ -64,6 +47,7 @@
                     </tbody>
                     
                   </table> -->
+
                 
                   <ag-grid-angular style="height: 80vh;" class="ag-theme-alpine" [columnDefs]="columnDefs"
                   [defaultColDef]="defaultColDef" [rowData]="rowData"
@@ -75,5 +59,60 @@
         </div>
       </div>
     </div>
+
+
+    <ng-template #revert let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Revert attributes</h4>
+          <button type="button" class="close" (click)="[modal.dismiss('Cross click'),ngOnInit()]"><i
+              class="tim-icons icon-simple-remove"> </i></button>
+  
+  
+  
+        </div>
+  
+       
+          <div class="modal-body">
+  
+            <p>
+              Reverted back to default attributes for all entity types
+            </p>
+  
+            
+  
+  
+          </div>
+          
+  
+      </div>
+    </ng-template>
+
+    <ng-template #push let-modal>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Push attributes to scenario</h4>
+          <button type="button" class="close" (click)="[modal.dismiss('Cross click'),ngOnInit()]"><i
+              class="tim-icons icon-simple-remove"> </i></button>
+  
+  
+  
+        </div>
+  
+       
+          <div class="modal-body">
+  
+            <p>
+              Attributes have been pushed to the attributes table in current scenario version
+            </p>
+  
+            
+  
+  
+          </div>
+          
+  
+      </div>
+    </ng-template>
   </div>
   

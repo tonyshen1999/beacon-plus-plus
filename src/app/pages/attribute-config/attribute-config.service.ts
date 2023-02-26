@@ -22,5 +22,18 @@ export class AttributeConfigService {
   }
 
 
+  pushDefaultAttributes(): Observable<any>{
+
+    return this.http.post(this.baseurl+"push-def-atr/",{},{})
+
+  }
+
+  pushCustomAttributes(attributes): Observable<any>{
+
+    let queryParams = {"scn_id":sessionStorage.getItem("scnID"),"scn_version":sessionStorage.getItem("scnVersion"),"attributes":attributes}
+
+    return this.http.post(this.baseurl+"push-custom-atr/",queryParams)
+  }
+
 
 }

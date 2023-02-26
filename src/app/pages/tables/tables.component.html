@@ -45,8 +45,9 @@
   <ng-template #updates let-modal>
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Saving...</h4>
-        <button type="button" class="close" (click)="[modal.dismiss('Cross click')]"><i
+        <h4 *ngIf="saveComplete == false" class="modal-title" id="modal-basic-title">Saving...</h4>
+        <h4 *ngIf="saveComplete == true" class="modal-title" id="modal-basic-title">Changes Saved to Database</h4>
+        <button *ngIf="saveComplete == true" type="button" class="close" (click)="[modal.dismiss('Cross click')]"><i
             class="tim-icons icon-simple-remove"> </i></button>
 
 
@@ -107,8 +108,15 @@
           (cellValueChanged)="onCellValueChanged($event)"
           (gridReady)="onGridReady($event)"
           [pagination]="true"
+          [undoRedoCellEditing]="true"
+          [undoRedoCellEditingLimit]="undoRedoCellEditingLimit"
           (selectionChanged)="onSelectionChanged($event)"
           rowSelection="multiple"
+          [enterMovesDownAfterEdit]="true"
+          [enableCellChangeFlash]="true"
+          [enableCellTextSelection]=true
+
+
     
         >
         </ag-grid-angular>
